@@ -24,11 +24,25 @@
 pip install -r requirements.txt
 ```
 
+Мигрируйте базу данных
+```sh
+python manage.py migrate
+```
+
+Создайте адмнистратора
+```sh
+python manage.py createsuperuser
+```
 Запустите разработческий сервер
 
 ```sh
-python3 manage.py runserver
+python manage.py runserver
 ```
+
+Сервер будет доступен по адресу http://127.0.0.1:8000/
+
+Панель администрирования  http://127.0.0.1:8000/admin
+
 
 ### Переменные окружения
 
