@@ -3,6 +3,9 @@ from django.db import models
 class Pokemon(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
+    title_en = models.CharField(max_length=200, null=True)
+    title_jp = models.CharField(max_length=200, null=True)
+    description = models.TextField(null=True)
     img = models.ImageField(upload_to='Pokemon', null=True)
 
     def __str__(self):
