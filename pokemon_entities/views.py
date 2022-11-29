@@ -97,6 +97,17 @@ def show_pokemon(request, pokemon_id):
     except Pokemon.DoesNotExist:
         pass
 
+    try:
+        next_pokemon = Pokemon.objects.get(title=str(requested_pokemon.next_evolution))
+        pokemon_on_page.setdefault('next_evolution',
+                                   {'pokemon_id':next_pokemon.id,
+                                       'img_url': request.build_absolute_uri(f'../../media/{next_pokemon.img}'),
+                                      'title_ru': next_pokemon.title,
+                                   })
+
+    except Pokemon.DoesNotExist:
+        pass
+
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     pokemon_entitys = PokemonEntity.objects.filter(pokemon=requested_pokemon, appeared_at__lte=localtime, disappeared_at__gt=localtime)
 
