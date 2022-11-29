@@ -21,6 +21,6 @@ class PokemonEntity(models.Model):
     Endurance = models.IntegerField(default=1)
 
     def __str__(self):
-        return f'({self.lat}, {self.lon})'
+        return f'({self.lat}, {self.lon})[{self.appeared_at} - {self.disappeared_at}]'
 
 
