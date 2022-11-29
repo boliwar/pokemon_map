@@ -77,7 +77,6 @@ def show_pokemon(request, pokemon_id):
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     filepath = request.build_absolute_uri(f'../../media/{requested_pokemon.img}')
-    print(filepath)
 
     pokemon_on_page = {'pokemon_id': requested_pokemon.id,
                        'img_url': filepath,
@@ -87,6 +86,16 @@ def show_pokemon(request, pokemon_id):
                        'description': requested_pokemon.description,
                        }
 
+    try:
+        preview_pokemon = Pokemon.objects.get(title=str(requested_pokemon.previous_evolution))
+        pokemon_on_page.setdefault('previous_evolution',
+                                   {'pokemon_id':preview_pokemon.id,
+                                       'img_url': request.build_absolute_uri(f'../../media/{preview_pokemon.img}'),
+                                      'title_ru': preview_pokemon.title,
+                                   })
+
+    except Pokemon.DoesNotExist:
+        pass
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     pokemon_entitys = PokemonEntity.objects.filter(pokemon=requested_pokemon, appeared_at__lte=localtime, disappeared_at__gt=localtime)
