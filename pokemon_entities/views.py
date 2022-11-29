@@ -1,5 +1,4 @@
 import folium
-import json
 
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
@@ -45,7 +44,8 @@ def show_all_pokemons(request):
             'title_ru': pokemon.title,
         })
 
-        pokemon_entitys = PokemonEntity.objects.filter(pokemon=pokemon, appeared_at__lte=localtime, disappeared_at__gt=localtime)
+        pokemon_entitys = PokemonEntity.objects.filter(pokemon=pokemon, appeared_at__lte=localtime,
+                                                       disappeared_at__gt=localtime)
         for pokemon_entity in pokemon_entitys:
             add_pokemon(
                 folium_map, pokemon_entity.lat,
@@ -89,9 +89,9 @@ def show_pokemon(request, pokemon_id):
     try:
         preview_pokemon = Pokemon.objects.get(title=str(requested_pokemon.previous_evolution))
         pokemon_on_page.setdefault('previous_evolution',
-                                   {'pokemon_id':preview_pokemon.id,
-                                       'img_url': request.build_absolute_uri(f'../../media/{preview_pokemon.img}'),
-                                      'title_ru': preview_pokemon.title,
+                                   {'pokemon_id': preview_pokemon.id,
+                                    'img_url': request.build_absolute_uri(f'../../media/{preview_pokemon.img}'),
+                                    'title_ru': preview_pokemon.title,
                                    })
     except Pokemon.DoesNotExist:
         pass
@@ -108,10 +108,9 @@ def show_pokemon(request, pokemon_id):
     except Pokemon.DoesNotExist:
         pass
 
-
-
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    pokemon_entitys = PokemonEntity.objects.filter(pokemon=requested_pokemon, appeared_at__lte=localtime, disappeared_at__gt=localtime)
+    pokemon_entitys = PokemonEntity.objects.filter(pokemon=requested_pokemon, appeared_at__lte=localtime,
+                                                   disappeared_at__gt=localtime)
 
     for pokemon_entity in pokemon_entitys:
         add_pokemon(
@@ -119,8 +118,6 @@ def show_pokemon(request, pokemon_id):
             pokemon_entity.lon,
             filepath
         )
-
-
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_on_page
