@@ -11,7 +11,6 @@ class Pokemon(models.Model):
     img = models.ImageField('Изображение', upload_to='Pokemon', null=True)
     previous_evolution = models.ForeignKey('self', related_name='next_evl', on_delete=models.PROTECT,
                                            blank=True, null=True, verbose_name='Предыдущая эволюция')
-    # next_evolution = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.title
