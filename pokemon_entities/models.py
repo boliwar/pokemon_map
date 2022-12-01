@@ -5,9 +5,9 @@ from django.utils import timezone
 class Pokemon(models.Model):
     """Покемон."""
     title = models.CharField('Заголовок', max_length=200)
-    title_en = models.CharField('Заголовок на английском', max_length=200, blank=True, null=True)
-    title_jp = models.CharField('Заголовок на японском', max_length=200, blank=True, null=True)
-    description = models.TextField('Описание', blank=True, null=True)
+    title_en = models.CharField('Заголовок на английском', max_length=200, blank=True, default='')
+    title_jp = models.CharField('Заголовок на японском', max_length=200, blank=True, default='')
+    description = models.TextField('Описание', blank=True, default='')
     img = models.ImageField('Изображение', upload_to='Pokemon', null=True)
     previous_evolution = models.ForeignKey('self', related_name='next_evl', on_delete=models.PROTECT,
                                            blank=True, null=True, verbose_name='Предыдущая эволюция')
