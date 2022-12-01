@@ -4,7 +4,6 @@ from django.utils import timezone
 
 class Pokemon(models.Model):
     """Покемон."""
-    id = models.AutoField('Ид', primary_key=True)
     title = models.CharField('Заголовок', max_length=200)
     title_en = models.CharField('Заголовок на английском', max_length=200, blank=True, null=True)
     title_jp = models.CharField('Заголовок на японском', max_length=200, blank=True, null=True)
