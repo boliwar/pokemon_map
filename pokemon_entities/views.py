@@ -70,15 +70,12 @@ def show_pokemon(request, pokemon_id):
                        'description': requested_pokemon.description,
                        }
 
-    try:
-        preview_pokemon = Pokemon.objects.get(title=str(requested_pokemon.previous_evolution))
+    if requested_pokemon.previous_evolution:
         pokemon_on_page.setdefault('previous_evolution',
-                                   {'pokemon_id': preview_pokemon.id,
-                                    'img_url': request.build_absolute_uri(f'../../media/{preview_pokemon.img}'),
-                                    'title_ru': preview_pokemon.title,
+                                   {'pokemon_id': requested_pokemon.previous_evolution.id,
+                                    'img_url': request.build_absolute_uri(f'../../media/{requested_pokemon.previous_evolution.img}'),
+                                    'title_ru': requested_pokemon.previous_evolution.title,
                                    })
-    except Pokemon.DoesNotExist:
-        pass
 
     try:
         next_pokemon = requested_pokemon.next_evl.all()
