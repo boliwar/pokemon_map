@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from .models import Pokemon, PokemonEntity
-
+from pogomap.settings import MEDIA_URL
 
 MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = (
@@ -32,9 +32,10 @@ def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
     pokemon_entitys = PokemonEntity.objects.filter(appeared_at__lte=localtime, disappeared_at__gt=localtime)
 
+    urlparse(request.get_full_path())
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon in pokemons:
-        filepath = request.build_absolute_uri(f'media/{pokemon.img}')
+        filepath = request.build_absolute_uri(f'{MEDIA_URL}{pokemon.img}')
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': filepath,
@@ -60,7 +61,7 @@ def show_pokemon(request, pokemon_id):
     localtime = timezone.localtime()
     requested_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
 
-    filepath = request.build_absolute_uri(f'../../media/{requested_pokemon.img}')
+    filepath = request.build_absolute_uri(f'{MEDIA_URL}{requested_pokemon.img}')
 
     pokemon_on_page = {'pokemon_id': requested_pokemon.id,
                        'img_url': filepath,
@@ -73,7 +74,7 @@ def show_pokemon(request, pokemon_id):
     if requested_pokemon.previous_evolution:
         pokemon_on_page.setdefault('previous_evolution',
                                    {'pokemon_id': requested_pokemon.previous_evolution.id,
-                                    'img_url': request.build_absolute_uri(f'../../media/{requested_pokemon.previous_evolution.img}'),
+                                    'img_url': request.build_absolute_uri(f'{MEDIA_URL}{requested_pokemon.previous_evolution.img}'),
                                     'title_ru': requested_pokemon.previous_evolution.title,
                                    })
 
@@ -82,7 +83,7 @@ def show_pokemon(request, pokemon_id):
         if next_pokemon:
             pokemon_on_page.setdefault('next_evolution',
                                        {'pokemon_id': next_pokemon[0].id,
-                                        'img_url': request.build_absolute_uri(f'../../media/{next_pokemon[0].img}'),
+                                        'img_url': request.build_absolute_uri(f'{MEDIA_URL}{next_pokemon[0].img}'),
                                         'title_ru': next_pokemon[0].title,
                                         })
 
