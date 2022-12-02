@@ -41,13 +41,13 @@ def show_all_pokemons(request):
             'title_ru': pokemon.title,
         })
 
-        pokemon_objects = pokemon_entities.filter(pokemon=pokemon)
-        for pokemon_object in pokemon_objects:
-            add_pokemon(
-                folium_map, pokemon_object.lat,
-                pokemon_object.lon,
-                filepath
-            )
+    for pokemon_entity in pokemon_entities:
+        filepath = request.build_absolute_uri(f'{MEDIA_URL}{pokemon_entity.pokemon.img}')
+        add_pokemon(
+            folium_map, pokemon_entity.lat,
+            pokemon_entity.lon,
+            filepath
+        )
 
     return render(request, 'mainpage.html', context={
         'map': folium_map._repr_html_(),
