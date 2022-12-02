@@ -78,7 +78,7 @@ def show_pokemon(request, pokemon_id):
                                    })
 
     try:
-        next_pokemon = requested_pokemon.next_evl.all()
+        next_pokemon = requested_pokemon.next_evolutions.all()
         if next_pokemon:
             pokemon_on_page.setdefault('next_evolution',
                                        {'pokemon_id': next_pokemon[0].id,
